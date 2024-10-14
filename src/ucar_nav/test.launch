@@ -1,0 +1,13 @@
+<launch>
+  <!-- Launch the first file -->
+  <include file="/home/ucar/ucar_ws/src/yolo/yolo.launch" />
+
+  <!-- Launch the second file -->
+  <include file="/home/ucar/ucar_ws/src/ucar_nav/launch/ucar_navigation_carlike.launch" />
+  <!-- <include file="/home/ucar/ucar_ws/src/ucar_nav/launch/ucar_navigation.launch" /> -->
+
+  <include file="/home/ucar/ucar_ws/src/xf_mic_asr_offline/launch/xf_mic_asr_offline.launch" />
+
+  <!-- <node name="awake" pkg="ucar_nav" type="awake.py" output="screen" /> -->
+
+</launch>

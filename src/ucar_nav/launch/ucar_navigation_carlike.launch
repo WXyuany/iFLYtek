@@ -1,0 +1,27 @@
+<launch>
+
+  <!-- Run the map server -->
+   
+  <include file="$(find ucar_controller)/launch/base_driver.launch" > </include>
+
+  <include file="$(find ydlidar)/launch/ydlidar.launch" > </include>
+
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find ucar_nav)/maps/xf_place.yaml" output="screen">
+   <param name="frame_id" value="map" />
+  </node> 
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d /home/ucar/ucar_ws/src/test.rviz" output="screen" />
+  
+  <include file="$(find ucar_nav)/launch/config/amcl/amcl_omni_1.launch" > </include>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="base_global_planner" value="global_planner/GlobalPlanner"/>
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
+    <rosparam file="$(find ucar_nav)/launch/config/move_base_2/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find ucar_nav)/launch/config/move_base_2/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find ucar_nav)/launch/config/move_base_2/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find ucar_nav)/launch/config/move_base_2/teb_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find ucar_nav)/launch/config/move_base_2/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find ucar_nav)/launch/config/move_base_2/global_costmap_params.yaml" command="load" />
+  </node>
+
+</launch>

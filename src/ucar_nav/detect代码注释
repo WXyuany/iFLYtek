@@ -1,0 +1,65 @@
+# import rospy
+# from darknet_ros_msgs.msg import BoundingBoxes
+
+# # 回调函数，接收bounding_boxes消息
+# def bounding_boxes_callback(msg):
+#     class_name = "cornveg"  # 目标类别为"cornveg"
+    
+#     # 遍历所有的bounding box
+#     for box in msg.bounding_boxes:
+#         # 如果类别为目标类别
+#         if box.Class == class_name:
+#             # 记录信息到数组
+#             # 这里可以根据实际需求进行相应操作，比如打印信息或存储到数组中
+#             print("Found a cornveg bounding box:")
+#             print("  Probability:", box.probability)
+#             print("  Coordinates (x, y, width, height):", box.xmin, box.ymin, box.xmax-box.xmin, box.ymax-box.ymin)
+
+# # 初始化ROS节点
+# rospy.init_node('bounding_box_subscriber')
+
+# # 创建一个订阅者，订阅/darknet_ros/bounding_boxes话题
+# rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, bounding_boxes_callback)
+
+# # 运行循环等待消息
+# rospy.spin()
+
+要实现当订阅得到三次 "cornveg" 后停止执行程序，你可以在回调函数中添加一个计数器。每当订阅到 "cornveg" 时，计数器加1。当计数器值达到3时，可以调用 `rospy.signal_shutdown()` 方法来停止程序。下面是修改后的代码示例：```python
+import rospy
+from darknet_ros_msgs.msg import BoundingBoxes
+
+# 全局计数器
+counter = 0
+
+# 回调函数，接收bounding_boxes消息
+def bounding_boxes_callback(msg):
+    global counter
+    class_name = "cornveg"  # 目标类别为"cornveg"
+    
+    # 遍历所有的bounding box
+    for box in msg.bounding_boxes:
+        # 如果类别为目标类别
+        if box.Class == class_name:
+            counter += 1
+            print("Found a cornveg bounding box:")
+            print("  Probability:", box.probability)
+            print("  Coordinates (x, y, width, height):", box.xmin, box.ymin, box.xmax-box.xmin, box.ymax-box.ymin)
+    
+    # 判断计数器是否达到3
+    if counter >= 3:
+        print("Received 3 cornveg bounding boxes. Stopping the program...")
+        rospy.signal_shutdown("Received 3 cornveg bounding boxes")
+
+# 初始化ROS节点
+rospy.init_node('bounding_box_subscriber')
+
+# 创建一个订阅者，订阅/darknet_ros/bounding_boxes话题
+rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, bounding_boxes_callback)
+
+# 运行循环等待消息
+rospy.spin()
+```
+
+在这个修改后的代码中，我们增加了一个全局计数器 `counter`，每当接收到 "cornveg" 的bounding box 时，计数器加1。然后，在回调函数中判断计数器是否已经达到3，如果是，就打印相应的信息，并调用 `rospy.signal_shutdown()` 方法停止程序。
+
+希望这个修改能满足你的需求！如果还有其他问题，请随时

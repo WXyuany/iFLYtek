@@ -1,0 +1,4 @@
+classes= 3
+train  = /root/darknet/scripts/VOCdevkit/VOC2007/ImageSets/Main/2007_train.txt
+names = /root/darknet/data/voc.names
+backup = backup

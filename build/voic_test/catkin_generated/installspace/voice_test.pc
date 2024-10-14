@@ -1,0 +1,8 @@
+prefix=/home/ucar/ucar_ws/install
+
+Name: voice_test
+Description: Description of voice_test
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

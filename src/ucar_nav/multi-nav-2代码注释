@@ -1,0 +1,236 @@
+import rospy
+import actionlib
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from darknet_ros_msgs.msg import BoundingBoxes
+from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool
+
+waypoints = {
+    'A': [(-0.197937617581, -0.0363936116198, 0.0), (0.0, 0.0, 0.0142360013903, 0.999898662998)],
+    'B': [(2.81073089421,-0.853274866552, 0.0), (0.0, 0.0, -0.628183588396, 0.778065151044)],
+    'C': [(2.82151451501,-4.68386805042, 0.0), (0.0, 0.0, -0.900249801083, 0.435373742491)],
+    'D': [(4.65147318838,-4.29575075574, 0.0), (0.0, 0.0, -0.534198519333, 0.845359060957)],
+    'E': [(4.41997343478,-1.22078828957, 0.0), (0.0, 0.0, 0.645487585991, 0.763770761637)],
+    'F': [(5.39528906196, -4.61674097354, 0.0), (0.0, 0.0, -0.0632489039781, 0.997997783638)],
+    'G': [(6.24988933899, -4.52677361244, 0.0), (0.0, 0.0, -0.142579355654, 0.989783373947)]
+}
+
+def create_goal_pose(position, orientation):
+    goal_pose = MoveBaseGoal()
+    goal_pose.target_pose.header.frame_id = 'map'
+    goal_pose.target_pose.pose.position.x = position[0]
+    goal_pose.target_pose.pose.position.y = position[1]
+    goal_pose.target_pose.pose.position.z = position[2]
+    goal_pose.target_pose.pose.orientation.x = orientation[0]
+    goal_pose.target_pose.pose.orientation.y = orientation[1]
+    goal_pose.target_pose.pose.orientation.z = orientation[2]
+    goal_pose.target_pose.pose.orientation.w = orientation[3]
+    return goal_pose
+
+detection_results_1 = []
+detection_results_2 = []
+detection_results_3 = []
+detection_results_4 = []
+detection_results_5 = []
+
+pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+def rotate_robot():
+    twist = Twist()
+    twist.angular.z = 2.09439510239  # 设置角速度为2.09439510239 rad/s，即每次旋转120度
+
+    rate = rospy.Rate(1)  # 设置发布频率为1Hz
+    ; for i in range(3):  # 旋转3次，每次120度
+    pub.publish(twist)
+    rate.sleep()
+
+
+# 回调函数，接收bounding_boxes消息
+def bounding_boxes_callback(msg):
+    class_name_1 = "cornveg"  # 目标类别为"cornveg"
+    class_name_2 = "riceveg"  # 目标类别为"riceveg"
+    class_name_3 = "wheatveg"  # 目标类别为"wheatveg"
+    class_name_4 = "cucumberveg"  # 目标类别为"cucumberveg"
+
+    # 遍历所有的bounding box
+    for box in msg.bounding_boxes:
+        # 如果类别为目标类别
+        if box.Class == class_name_1:
+            # 记录信息到数组
+            # 这里可以根据实际需求进行相应操作，比如打印信息或存储到数组中
+            ; print("Found a cornveg bounding box:")
+            ; print("  Probability:", box.probability)
+            print("  Coordinates (x, y, width, height):", box.xmin, box.ymin, box.xmax-box.xmin, box.ymax-box.ymin)
+            # 将识别结果存入数组中
+            detection_results_1.append(data)
+
+            # 调用旋转函数，让机器人旋转
+            rotate_robot()
+
+            # 判断是否接收到三个相同的话题信息
+            count = detection_results_1.count(data)
+            if count >= 3:
+                # 中止订阅
+                rospy.loginfo("Received three identical bounding box messages. Stopping subscription.")
+                subscription.unregister()
+
+; # 初始化ROS节点
+; rospy.init_node('bounding_box_subscriber')
+
+; # 创建一个订阅者，订阅/darknet_ros/bounding_boxes话题
+; rospy.Subscriber('/darknet_ros/bounding_boxes', BoundingBoxes, bounding_boxes_callback)
+
+; # 运行循环等待消息
+; rospy.spin()
+
+    # 遍历所有的bounding box
+    for box in msg.bounding_boxes:
+        # 如果类别为目标类别
+        if box.Class == class_name_2:
+            # 记录信息到数组
+            # 这里可以根据实际需求进行相应操作，比如打印信息或存储到数组中
+            ; print("Found a cornveg bounding box:")
+            ; print("  Probability:", box.probability)
+            print("  Coordinates (x, y, width, height):", box.xmin, box.ymin, box.xmax-box.xmin, box.ymax-box.ymin)
+            # 将识别结果存入数组中
+            detection_results_2.append(data)
+
+            # 调用旋转函数，让机器人旋转
+            rotate_robot()
+
+            # 判断是否接收到三个相同的话题信息
+            count = detection_results_2.count(data)
+            if count >= 3:
+                # 中止订阅
+                rospy.loginfo("Received three identical bounding box messages. Stopping subscription.")
+                subscription.unregister()
+
+    # 遍历所有的bounding box
+    for box in msg.bounding_boxes:
+        # 如果类别为目标类别
+        if box.Class == class_name_3:
+            # 记录信息到数组
+            # 这里可以根据实际需求进行相应操作，比如打印信息或存储到数组中
+            ; print("Found a cornveg bounding box:")
+            ; print("  Probability:", box.probability)
+            print("  Coordinates (x, y, width, height):", box.xmin, box.ymin, box.xmax-box.xmin, box.ymax-box.ymin)
+            # 将识别结果存入数组中
+            detection_results_3.append(data)
+
+            # 调用旋转函数，让机器人旋转
+            rotate_robot()
+
+            # 判断是否接收到三个相同的话题信息
+            count = detection_results_3.count(data)
+            if count >= 3:
+                # 中止订阅
+                rospy.loginfo("Received three identical bounding box messages. Stopping subscription.")
+                subscription.unregister()
+
+    # 遍历所有的bounding box
+    for box in msg.bounding_boxes:
+        # 如果类别为目标类别
+        if box.Class == class_name_4:
+            # 记录信息到数组
+            # 这里可以根据实际需求进行相应操作，比如打印信息或存储到数组中
+            ; print("Found a cornveg bounding box:")
+            ; print("  Probability:", box.probability)
+            print("  Coordinates (x, y, width, height):", box.xmin, box.ymin, box.xmax-box.xmin, box.ymax-box.ymin)
+            # 将识别结果存入数组中
+            detection_results_4.append(data)
+
+            # 调用旋转函数，让机器人旋转
+            rotate_robot()
+
+            # 判断是否接收到三个相同的话题信息
+            count = detection_results_4.count(data)
+            if count >= 3:
+                # 中止订阅
+                rospy.loginfo("Received three identical bounding box messages. Stopping subscription.")
+                subscription.unregister()
+
+
+def execute_zone_A():
+    print("Executing Zone A")
+    goal1 = create_goal_pose(waypoints['A'][0], waypoints['A'][1])
+    # 执行第一个目标点
+    client.send_goal(goal1)
+    client.wait_for_result()
+
+    # 执行第二个目标点（如果有）
+    # goal2 = create_goal_pose(waypoints['A'][2], waypoints['A'][3])
+    # client.send_goal(goal2)
+    # client.wait_for_result()
+
+    # 在完成A区任务后，进入下一个区域
+    execute_zone_B()
+
+def execute_zone_B():
+    print("Executing Zone B")
+    # 在B区执行任务...
+    # 控制机器人每次原地旋转120度
+    # 通过cmd/vel进行控制，具体方法根据机器人的控制接口而定
+
+    # 如果识别任务完成，将识别结果存入数组中
+    # 订阅/darknet_ros/bounding_boxes话题
+    subscription = rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, bounding_boxes_callback)
+
+    # 等待任务完成或接收到三个相同的话题信息后中止订阅
+    rospy.spin()
+
+
+    # 在完成B区任务后，进入下一个区域
+    execute_zone_C()
+
+def execute_zone_C():
+    print("Executing Zone C")
+    # 在C区执行任务...
+    # 订阅/darknet_ros/bounding_boxes话题
+    subscription = rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, bounding_boxes_callback)
+
+    # 等待任务完成或接收到三个相同的话题信息后中止订阅
+    rospy.spin()
+    # 在完成C区任务后，进入下一个区域
+    execute_zone_D()
+
+def execute_zone_D():
+    print("Executing Zone D")
+    # 在D区执行任务...
+    # 订阅/darknet_ros/bounding_boxes话题
+    subscription = rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, bounding_boxes_callback)
+
+    # 等待任务完成或接收到三个相同的话题信息后中止订阅
+    rospy.spin()
+    # 在完成D区任务后，进入下一个区域
+    execute_zone_E()
+
+def execute_zone_E():
+    print("Executing Zone E")
+    # 在E区执行任务...
+    # 订阅/darknet_ros/bounding_boxes话题
+    subscription = rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, bounding_boxes_callback)
+
+    # 等待任务完成或接收到三个相同的话题信息后中止订阅
+    rospy.spin()
+    # 在完成E区任务后，进入下一个区域
+    execute_zone_F()
+
+def execute_zone_F():
+    print("Executing Zone F")
+    # 在F区执行任务...
+
+    # 在完成F区任务后，结束执行
+
+def execute_zone_G():
+    print("Executing Zone G")
+    # 在F区执行任务...
+
+    # 在完成F区任务后，结束执行
+
+# 示例使用方法
+if __name__ == '__main__':
+    rospy.init_node('move_base_client')
+    client = actionlib.SimpleActionClient('move_base', MoveBaseAction)
+    client.wait_for_server()
+
+    # 从A区开始执行任务
+    execute_zone_A()

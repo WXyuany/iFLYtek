@@ -1,0 +1,8 @@
+prefix=/home/ucar/ucar_ws/devel
+
+Name: xf_mic_tts_online
+Description: Description of xf_mic_tts_online
+Version: 0.0.0
+Cflags: -I/home/ucar/ucar_ws/devel/include
+Libs: -L${prefix}/lib 
+Requires: message_runtime

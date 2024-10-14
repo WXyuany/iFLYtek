@@ -1,0 +1,8 @@
+prefix=/home/ucar/ucar_ws/devel
+
+Name: xf_mic_bringup
+Description: Description of xf_mic_bringup
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

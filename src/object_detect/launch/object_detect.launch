@@ -1,0 +1,3 @@
+<launch>
+    <node ns = "arm" pkg="object_detect" type="dark_detect.py" name ="object_detect" output="screen"/>      
+</launch>
